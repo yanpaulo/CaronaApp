@@ -13,7 +13,7 @@ namespace CaronaApp.Server.Models.Entities
         // If you wish to target a different database and/or database provider, modify the 'CaronaContext' 
         // connection string in the application configuration file.
         public CaronaContext()
-            : base("name=CaronaContext")
+            : base("name=DefaultConnection")
         {
         }
 
