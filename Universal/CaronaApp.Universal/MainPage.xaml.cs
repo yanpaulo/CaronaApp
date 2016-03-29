@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CaronaApp.Universal.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -27,9 +28,9 @@ namespace CaronaApp.Universal
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private Geolocator geolocator = new Geolocator();
+        private Geolocator geolocator;
         private MapIcon centerIcon = new MapIcon();
-        
+        private Timer timer;
 
         public MainPage()
         {
@@ -52,8 +53,9 @@ namespace CaronaApp.Universal
                     // Value of 2000 milliseconds (2 seconds) 
                     // isn't a requirement, it is just an example.
                     geolocator = new Geolocator { ReportInterval = 1000 };
+
+                    centerIcon.Location = (await geolocator.GetGeopositionAsync()).AsGeopoint();
                     mapControl.MapElements.Clear();
-                    centerIcon = UpdateLocationData(await geolocator.GetGeopositionAsync());
                     mapControl.MapElements.Add(centerIcon);
                     mapControl.Center = centerIcon.Location;
                     // Subscribe to PositionChanged event to get updated tracking positions
@@ -61,8 +63,8 @@ namespace CaronaApp.Universal
 
                     // Subscribe to StatusChanged event to get updates of location status changes
                     //geolocator.StatusChanged += OnStatusChanged;
-                    
-                    
+
+                    timer = new Timer(Timer_Callback, null, 0, 10000);
                     break;
 
                 case GeolocationAccessStatus.Denied:
@@ -85,20 +87,22 @@ namespace CaronaApp.Universal
         {
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-                UpdateLocationData(e.Position);
+                centerIcon.Location = e.Position.AsGeopoint();
             });
         }
 
-        private void Timer_Callback(object o)
+        private async void Timer_Callback(object o)
         {
-
+            
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                UpdateCaronas();
+            });
         }
-
-        private MapIcon UpdateLocationData(Geoposition position)
+        private async void UpdateCaronas()
         {
-            Geopoint point = new Geopoint(new BasicGeoposition() { Latitude = position.Coordinate.Latitude, Longitude = position.Coordinate.Longitude });
-            centerIcon.Location = point;
-            return centerIcon;
+            var items = await CaronaService.GetCaronas();
+            MapItems.ItemsSource = items;
         }
     }
 }

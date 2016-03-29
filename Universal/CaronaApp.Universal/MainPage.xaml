@@ -10,7 +10,38 @@
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Slider x:Name="slider" Value="16" Minimum="1" Maximum="20" ></Slider>
-        <Maps:MapControl x:Name="mapControl" HorizontalAlignment="Stretch" ZoomLevel="{Binding ElementName=slider, Path=Value, Mode=TwoWay}" Margin="5,50,5,5" VerticalAlignment="Stretch" Loaded="mapControl_Loaded" ZoomInteractionMode="GestureAndControl"/>
+        <Maps:MapControl x:Name="mapControl" HorizontalAlignment="Stretch" ZoomLevel="{Binding ElementName=slider, Path=Value, Mode=TwoWay}" Margin="5,50,5,5" VerticalAlignment="Stretch" Loaded="mapControl_Loaded" ZoomInteractionMode="GestureAndControl">
+            
+            <Maps:MapItemsControl x:Name="MapItems">
+                <Maps:MapItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button  x:Name="mapItemButton" Background="Transparent">
+                            <Button.Flyout>
+                                <Flyout>
+                                    <StackPanel>
+                                        <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{Binding DisplayName}" Margin="0,0,0,12" />
+                                    </StackPanel>
+                                </Flyout>
+                            </Button.Flyout>
+                            <StackPanel>
+                                <!--<Border Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+                                    <TextBlock Text="{Binding DisplayName}"/>
+                                </Border>-->
+                                <Image Source="ms-appx:///Assets/carrinho.png" Width="50"
+                                               Maps:MapControl.Location="{Binding Location}">
+
+                                    <Image.Transitions>
+                                        <TransitionCollection>
+                                            <EntranceThemeTransition/>
+                                        </TransitionCollection>
+                                    </Image.Transitions>
+                                </Image>
+                            </StackPanel>
+                        </Button>
+                    </DataTemplate>
+                </Maps:MapItemsControl.ItemTemplate>
+            </Maps:MapItemsControl>
+        </Maps:MapControl>
 
     </Grid>
 </Page>
