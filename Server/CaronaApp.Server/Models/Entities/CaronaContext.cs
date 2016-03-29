@@ -21,6 +21,8 @@ namespace CaronaApp.Server.Models.Entities
         // on configuring and using a Code First model, see http://go.microsoft.com/fwlink/?LinkId=390109.
 
         public virtual DbSet<Carona> Caronas { get; set; }
+
+        public virtual DbSet<PassageiroCarona> PassageirosCarona { get; set; }
     }
 
 }

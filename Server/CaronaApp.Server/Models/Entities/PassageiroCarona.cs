@@ -5,19 +5,14 @@ using System.Web;
 
 namespace CaronaApp.Server.Models.Entities
 {
-    public class Carona
+    public class PassageiroCarona
     {
         public int Id { get; set; }
 
-        public Guid UserGuid { get; set; }
+        public int CaronaId { get; set; }
 
-        public double Latitude { get; set; }
-
-        public double Longitude { get; set; }
+        public Carona Carona { get; set; }
 
         public string Nome { get; set; }
-
-        public int Quantidade { get; set; }
-
     }
 }
