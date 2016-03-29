@@ -7,6 +7,7 @@ using System.Threading;
 using Windows.Devices.Geolocation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
 using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -26,6 +27,10 @@ namespace CaronaApp.Universal
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private Geolocator geolocator = new Geolocator();
+        private MapIcon centerIcon = new MapIcon();
+        
+
         public MainPage()
         {
             this.InitializeComponent();
@@ -39,35 +44,61 @@ namespace CaronaApp.Universal
             switch (accessStatus)
             {
                 case GeolocationAccessStatus.Allowed:
+                    // You should set MovementThreshold for distance-based tracking
+                    // or ReportInterval for periodic-based tracking before adding event
+                    // handlers. If none is set, a ReportInterval of 1 second is used
+                    // as a default and a position will be returned every 1 second.
+                    //
+                    // Value of 2000 milliseconds (2 seconds) 
+                    // isn't a requirement, it is just an example.
+                    geolocator = new Geolocator { ReportInterval = 1000 };
+                    mapControl.MapElements.Clear();
+                    centerIcon = UpdateLocationData(await geolocator.GetGeopositionAsync());
+                    mapControl.MapElements.Add(centerIcon);
+                    mapControl.Center = centerIcon.Location;
+                    // Subscribe to PositionChanged event to get updated tracking positions
+                    geolocator.PositionChanged += OnPositionChanged;
 
-                    // Get cancellation token
-                    CancellationTokenSource _cts = new CancellationTokenSource();
-                    CancellationToken token = _cts.Token;
-
-                    // If DesiredAccuracy or DesiredAccuracyInMeters are not set (or value is 0), DesiredAccuracy.Default is used.
-                    Geolocator geolocator = new Geolocator();
-
-                    // Carry out the operation
-                    Geoposition pos = await geolocator.GetGeopositionAsync().AsTask(token);
-
-                    mapControl.Center = new Geopoint(new BasicGeoposition()
-                    {
-                        Altitude = pos.Coordinate.Altitude.GetValueOrDefault(0),
-                        Longitude = pos.Coordinate.Longitude,
-                        Latitude = pos.Coordinate.Latitude }
-                    );
-                    mapControl.MapElements.Add(new MapIcon() { Location = mapControl.Center });
-
+                    // Subscribe to StatusChanged event to get updates of location status changes
+                    //geolocator.StatusChanged += OnStatusChanged;
+                    
+                    
                     break;
 
                 case GeolocationAccessStatus.Denied:
-                    await new MessageDialog("Acesso negado").ShowAsync();
+                    await new MessageDialog("Access denied!").ShowAsync();
                     break;
 
                 case GeolocationAccessStatus.Unspecified:
-                    await new MessageDialog("Erro").ShowAsync();
+                    await new MessageDialog("Unspecified error!").ShowAsync();
                     break;
             }
+        }
+
+        /// <summary>
+        /// Event handler for PositionChanged events. It is raised when
+        /// a location is available for the tracking session specified.
+        /// </summary>
+        /// <param name="sender">Geolocator instance</param>
+        /// <param name="e">Position data</param>
+        async private void OnPositionChanged(Geolocator sender, PositionChangedEventArgs e)
+        {
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
+            {
+                UpdateLocationData(e.Position);
+            });
+        }
+
+        private void Timer_Callback(object o)
+        {
+
+        }
+
+        private MapIcon UpdateLocationData(Geoposition position)
+        {
+            Geopoint point = new Geopoint(new BasicGeoposition() { Latitude = position.Coordinate.Latitude, Longitude = position.Coordinate.Longitude });
+            centerIcon.Location = point;
+            return centerIcon;
         }
     }
 }
