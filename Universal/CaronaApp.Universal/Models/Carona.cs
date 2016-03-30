@@ -9,7 +9,8 @@ namespace CaronaApp.Universal.Models
 {
     public class Carona
     {
-        public string DisplayName { get; set; } = "Ôme da carona";
+        public int Id { get; set; }
+        public string DisplayName { get; set; }
         public Geopoint Location { get; set; }
 
         //public Uri ImageSourceUri { get; set; }

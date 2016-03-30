@@ -28,18 +28,36 @@ namespace CaronaApp.Universal.Models
                 if (jsArrayItem != null && jsArrayItem.ValueType == JsonValueType.Object)
                 {
                     var item = jsArrayItem.GetObject();
-                    Carona c = new Carona
-                    {
-                        Location = new Geopoint(new BasicGeoposition()
-                        {
-                            Latitude = item["Latitude"].GetNumber(),
-                            Longitude = item["Longitude"].GetNumber()
-                        })
-                    };
+                    Carona c = FromJsonObject(item);
                     caronas.Add(c);
                 }
             }
             return caronas;
+        }
+
+        public static async Task<Carona> GetCarona(int id)
+        {
+            HttpClient client = new HttpClient();
+            HttpResponseMessage response = await client.GetAsync($"http://carona.yanscorp.com/api/caronas/{id}");
+            string responseText = await response.Content.ReadAsStringAsync();
+            JsonObject jsObject = JsonObject.Parse(responseText);
+            Carona c = FromJsonObject(jsObject);
+
+            return c;
+        }
+
+        private static Carona FromJsonObject(JsonObject jsObject)
+        {
+            return new Carona
+            {
+                Id = (int)jsObject["Id"].GetNumber(),
+                DisplayName = jsObject["Nome"].ToString(),
+                Location = new Geopoint(new BasicGeoposition
+                {
+                    Latitude = jsObject["Latitude"].GetNumber(),
+                    Longitude = jsObject["Longitude"].GetNumber()
+                })
+            };
         }
     }
 }

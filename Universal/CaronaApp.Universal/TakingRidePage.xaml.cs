@@ -19,22 +19,41 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
+// The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
 namespace CaronaApp.Universal
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainPage : Page
+    public sealed partial class TakingRidePage : Page
     {
         private Geolocator geolocator;
-        private MapIcon centerIcon = new MapIcon();
+        private Carona carona;
         private Timer timer;
+        private TakingRideViewModel viewModel;
 
-        public MainPage()
+        public TakingRidePage()
         {
+            this.DataContext = viewModel = new TakingRideViewModel();
             this.InitializeComponent();
+        }
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            carona = (Carona)e.Parameter;
+            Frame rootFrame = Window.Current.Content as Frame;
+
+            if (rootFrame.CanGoBack)
+            {
+                // If we have pages in our in-app backstack and have opted in to showing back, do so
+                SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Visible;
+            }
+            else
+            {
+                // Remove the UI from the title bar if there are no pages in our in-app back stack
+                SystemNavigationManager.GetForCurrentView().AppViewBackButtonVisibility = AppViewBackButtonVisibility.Collapsed;
+            }
+            base.OnNavigatedTo(e);
         }
 
         private async void mapControl_Loaded(object sender, RoutedEventArgs e)
@@ -54,17 +73,15 @@ namespace CaronaApp.Universal
                     // isn't a requirement, it is just an example.
                     geolocator = new Geolocator { ReportInterval = 1000 };
 
-                    centerIcon.Location = (await geolocator.GetGeopositionAsync()).AsGeopoint();
-                    mapControl.MapElements.Clear();
-                    mapControl.MapElements.Add(centerIcon);
-                    mapControl.Center = centerIcon.Location;
+                    viewModel.CenterPoint = (await geolocator.GetGeopositionAsync()).AsGeopoint();
+                    mapControl.Center = viewModel.CenterPoint;
                     // Subscribe to PositionChanged event to get updated tracking positions
                     geolocator.PositionChanged += OnPositionChanged;
 
                     // Subscribe to StatusChanged event to get updates of location status changes
                     //geolocator.StatusChanged += OnStatusChanged;
 
-                    timer = new Timer(Timer_Callback, null, 0, 10000);
+                    timer = new Timer(Timer_Callback, null, 0, 2000);
                     break;
 
                 case GeolocationAccessStatus.Denied:
@@ -87,28 +104,22 @@ namespace CaronaApp.Universal
         {
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-                centerIcon.Location = e.Position.AsGeopoint();
+                viewModel.CenterPoint = e.Position.AsGeopoint();
             });
         }
 
         private async void Timer_Callback(object o)
         {
-            
+
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () =>
             {
-                UpdateCaronas();
+                UpdateCarona();
             });
         }
-        private async void UpdateCaronas()
+        private async void UpdateCarona()
         {
-            var items = await CaronaService.GetCaronas();
-            MapItems.ItemsSource = items;
+            viewModel.Carona = await CaronaService.GetCarona(carona.Id);
         }
 
-        private void mapItemButton_Click(object sender, RoutedEventArgs e)
-        {
-            Button b = (Button)sender;
-            this.Frame.Navigate(typeof(TakingRidePage), b.DataContext);
-        }
     }
 }

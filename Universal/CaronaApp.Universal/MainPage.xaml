@@ -19,7 +19,8 @@
                             <Button.Flyout>
                                 <Flyout>
                                     <StackPanel>
-                                        <TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{Binding DisplayName}" Margin="0,0,0,12" />
+                                        <Button Content="{Binding DisplayName}" MinWidth="10" Click="mapItemButton_Click"></Button>
+                                        <!--<TextBlock Style="{ThemeResource BaseTextBlockStyle}" Text="{Binding DisplayName}" Margin="0,0,0,12" />-->
                                     </StackPanel>
                                 </Flyout>
                             </Button.Flyout>
