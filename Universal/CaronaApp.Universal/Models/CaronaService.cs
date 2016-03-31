@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net.Http;
+using Windows.Web.Http;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Data.Json;
@@ -19,7 +19,7 @@ namespace CaronaApp.Universal.Models
         public static async Task<List<Carona>> GetCaronas()
         {
             HttpClient client = new HttpClient();
-            HttpResponseMessage response = await client.GetAsync("http://carona.yanscorp.com/api/caronas");
+            HttpResponseMessage response = await client.GetAsync(new Uri("http://carona.yanscorp.com/api/caronas"));
             string responseText = await response.Content.ReadAsStringAsync();
             JsonArray jsArray = JsonArray.Parse(responseText);
             List<Carona> caronas = new List<Carona>();
@@ -38,12 +38,29 @@ namespace CaronaApp.Universal.Models
         public static async Task<Carona> GetCarona(int id)
         {
             HttpClient client = new HttpClient();
-            HttpResponseMessage response = await client.GetAsync($"http://carona.yanscorp.com/api/caronas/{id}");
+            HttpResponseMessage response = await client.GetAsync(new Uri($"http://carona.yanscorp.com/api/caronas/{id}"));
             string responseText = await response.Content.ReadAsStringAsync();
             JsonObject jsObject = JsonObject.Parse(responseText);
             Carona c = FromJsonObject(jsObject);
 
             return c;
+        }
+
+        public static async void CreateCarona(Carona carona)
+        {
+            HttpClient client = new HttpClient();
+            
+            JsonObject jsObject = new JsonObject();
+            jsObject["QuantidadeVagas"] = JsonValue.CreateNumberValue(carona.QuantidadeVagas);
+            jsObject["Latitude"] = JsonValue.CreateNumberValue(carona.Location.Position.Latitude);
+            jsObject["Longitude"] = JsonValue.CreateNumberValue(carona.Location.Position.Longitude);
+            jsObject["Nome"] = JsonValue.CreateStringValue(carona.DisplayName);
+            HttpStringContent content = new HttpStringContent(jsObject.Stringify(), Windows.Storage.Streams.UnicodeEncoding.Utf8, "text/json");
+            HttpResponseMessage response = await client.PostAsync(new Uri("http://carona.yanscorp.com/api/caronas"), content);
+            string responseText = await response.Content.ReadAsStringAsync();
+            responseText += "";
+            int i = 0;
+            i++;
         }
 
         private static Carona FromJsonObject(JsonObject jsObject)

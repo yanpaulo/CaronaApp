@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Windows.Devices.Geolocation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
@@ -32,6 +33,11 @@ namespace CaronaApp.Universal.Models
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             Frame.GoBack();
+        }
+
+        private void ConfirmButton_Click(object sender, RoutedEventArgs e)
+        {
+            CaronaService.CreateCarona(new Carona { QuantidadeVagas = Slots });
         }
     }
 }

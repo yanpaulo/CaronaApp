@@ -10,7 +10,7 @@
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         
         <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-            <TextBox Width="250">
+            <TextBox Width="250" Text="{x:Bind Slots, Mode=TwoWay}">
                 <TextBox.Header>
                     <TextBlock HorizontalAlignment="Center">Vagas:</TextBlock>
                 </TextBox.Header>
@@ -20,7 +20,7 @@
     </Grid>
     <Page.BottomAppBar>
         <CommandBar>
-            <AppBarButton x:Name="ConfirmButton" Icon="Accept">Confirmar</AppBarButton>
+            <AppBarButton x:Name="ConfirmButton" Icon="Accept" Click="ConfirmButton_Click">Confirmar</AppBarButton>
             <AppBarButton x:Name="CancelButton" Icon="Cancel" Click="CancelButton_Click">Cancelar</AppBarButton>
         </CommandBar>
     </Page.BottomAppBar>
