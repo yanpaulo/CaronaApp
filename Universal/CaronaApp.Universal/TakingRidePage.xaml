@@ -8,12 +8,29 @@
     x:Class="CaronaApp.Universal.TakingRidePage"
     mc:Ignorable="d">
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Slider x:Name="slider" Value="16" Minimum="1" Maximum="20" ></Slider>
-        <Maps:MapControl x:Name="mapControl" HorizontalAlignment="Stretch" ZoomLevel="{Binding ElementName=slider, Path=Value, Mode=TwoWay}" Margin="5,50,5,5" VerticalAlignment="Stretch" Loaded="mapControl_Loaded" ZoomInteractionMode="GestureAndControl">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Slider x:Name="slider" Grid.Row="0" VerticalAlignment="Stretch" Value="16" Minimum="1" Maximum="20" ></Slider>
+        <Maps:MapControl x:Name="mapControl" Grid.Row="1" HorizontalAlignment="Stretch" ZoomLevel="{Binding ElementName=slider, Path=Value, Mode=TwoWay}" Margin="5,50,5,5" VerticalAlignment="Stretch" Loaded="mapControl_Loaded" ZoomInteractionMode="GestureAndControl">
             <Image Source="ms-appx:///Assets/person_icon.png" Width="35" Maps:MapControl.Location="{Binding CenterPoint}" />
             <Image Source="ms-appx:///Assets/carrinho.png" Width="35" Maps:MapControl.Location="{Binding Carona.Location}" />
         </Maps:MapControl>
-
+        <StackPanel Grid.Row="2" Padding="10,10,10,10">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock>Nome: </TextBlock>
+                <TextBlock Text="{Binding Path=Carona.DisplayName, FallbackValue='Indosponível'}"></TextBlock>
+            </StackPanel>
+            
+        </StackPanel>
+        
 
     </Grid>
+    <Page.BottomAppBar>
+        <CommandBar IsOpen="True" IsSticky="True">
+            <AppBarButton x:Name="cancelRideButton" Icon="Cancel" Label="Cancelar"  Click="cancelRideButton_Click"></AppBarButton>
+        </CommandBar>
+    </Page.BottomAppBar>
 </Page>

@@ -121,5 +121,12 @@ namespace CaronaApp.Universal
             viewModel.Carona = await CaronaService.GetCarona(carona.Id);
         }
 
+        private async void cancelRideButton_Click(object sender, RoutedEventArgs e)
+        {
+            MessageDialog question = new MessageDialog("Cancelar a carona?");
+            question.Commands.Add(new UICommand("Sim", (c) => { this.Frame.GoBack(); }, 1));
+            question.Commands.Add(new UICommand("Não", (c) => { }, 2));
+            await question.ShowAsync();
+        }
     }
 }
