@@ -104,7 +104,7 @@
     </Compile>
     <Compile Include="Models\Carona.cs" />
     <Compile Include="Models\CaronaService.cs" />
-    <Compile Include="Models\CreateRideView.xaml.cs">
+    <Compile Include="CreateRideView.xaml.cs">
       <DependentUpon>CreateRideView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\PassageiroCarona.cs" />
@@ -141,7 +141,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Models\CreateRideView.xaml">
+    <Page Include="CreateRideView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
