@@ -17,7 +17,9 @@ namespace CaronaApp.Server.Models.Entities
 
         public string Nome { get; set; }
 
-        public int Quantidade { get; set; }
+        public int QuantidadeVagas { get; set; }
+
+        public virtual ICollection<PassageiroCarona> Passageiros { get; set; }
 
     }
 }
