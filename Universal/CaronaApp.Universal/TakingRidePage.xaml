@@ -18,7 +18,7 @@
             <Image Source="ms-appx:///Assets/person_icon.png" Width="35" Maps:MapControl.Location="{Binding CenterPoint}" />
             <Image Source="ms-appx:///Assets/carrinho.png" Width="35" Maps:MapControl.Location="{Binding Carona.Location}" />
         </Maps:MapControl>
-        <StackPanel Grid.Row="2" Padding="10,10,10,10">
+        <StackPanel Grid.Row="2" Padding="10,10,10,20">
             <StackPanel Orientation="Horizontal">
                 <TextBlock>Nome: </TextBlock>
                 <TextBlock Text="{Binding Path=Carona.DisplayName, FallbackValue='Indosponível'}"></TextBlock>
