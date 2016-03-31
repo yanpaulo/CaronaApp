@@ -45,4 +45,9 @@
         </Maps:MapControl>
 
     </Grid>
+    <Page.BottomAppBar>
+        <CommandBar>
+            <AppBarButton x:Name="OfferRideButton" Icon="Emoji" Click="OfferRideButton_Click">Oferecer carona</AppBarButton>
+        </CommandBar>
+    </Page.BottomAppBar>
 </Page>

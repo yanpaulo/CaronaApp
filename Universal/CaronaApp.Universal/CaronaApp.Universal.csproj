@@ -104,6 +104,9 @@
     </Compile>
     <Compile Include="Models\Carona.cs" />
     <Compile Include="Models\CaronaService.cs" />
+    <Compile Include="Models\CreateRideView.xaml.cs">
+      <DependentUpon>CreateRideView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Models\PassageiroCarona.cs" />
     <Compile Include="Models\TakingRideViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -137,6 +140,10 @@
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Models\CreateRideView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="TakingRidePage.xaml">
       <SubType>Designer</SubType>

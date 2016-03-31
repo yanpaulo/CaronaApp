@@ -110,5 +110,10 @@ namespace CaronaApp.Universal
             Button b = (Button)sender;
             this.Frame.Navigate(typeof(TakingRidePage), b.DataContext);
         }
+
+        private void OfferRideButton_Click(object sender, RoutedEventArgs e)
+        {
+            Frame.Navigate(typeof(CreateRideView));
+        }
     }
 }
