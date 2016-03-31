@@ -89,4 +89,4 @@ namespace CaronaApp.Universal.Models
     }
 
 }
-}
+
