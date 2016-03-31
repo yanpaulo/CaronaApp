@@ -11,7 +11,7 @@ namespace CaronaApp.Server.Models.Entities
 
         public int CaronaId { get; set; }
 
-        public Carona Carona { get; set; }
+        //public Carona Carona { get; set; }
 
         public string Nome { get; set; }
     }
