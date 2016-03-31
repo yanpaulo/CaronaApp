@@ -23,10 +23,14 @@ namespace CaronaApp.Universal.Models
     /// </summary>
     public sealed partial class CreateRideView : Page
     {
+        private Geolocator geolocator;
+
+        public Carona Carona { get; set; } = new Carona();
         public int Slots { get; set; } = 1;
 
         public CreateRideView()
         {
+            this.DataContext = Carona;
             this.InitializeComponent();
         }
 
@@ -37,7 +41,14 @@ namespace CaronaApp.Universal.Models
 
         private void ConfirmButton_Click(object sender, RoutedEventArgs e)
         {
-            CaronaService.CreateCarona(new Carona { QuantidadeVagas = Slots });
+            CaronaService.CreateCarona(Carona);
+            this.Frame.Navigate(typeof(RideScreen));
+        }
+
+        private async void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            geolocator = new Geolocator();
+            Carona.Location = (await geolocator.GetGeopositionAsync()).AsGeopoint();
         }
     }
 }
