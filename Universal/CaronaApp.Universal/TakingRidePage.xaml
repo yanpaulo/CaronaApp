@@ -23,7 +23,11 @@
                 <TextBlock>Nome: </TextBlock>
                 <TextBlock Text="{Binding Path=Carona.DisplayName, FallbackValue='Indosponível'}"></TextBlock>
             </StackPanel>
-            
+            <StackPanel Orientation="Horizontal">
+                <TextBlock>Vagas:</TextBlock>
+                <TextBlock Text="{Binding Path=Carona.Vagas, FallbackValue='1'}"></TextBlock>
+            </StackPanel>
+
         </StackPanel>
         
 

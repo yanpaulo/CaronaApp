@@ -10,9 +10,14 @@ namespace CaronaApp.Universal.Models
     public class Carona
     {
         public int Id { get; set; }
-        public string DisplayName { get; set; }
-        public Geopoint Location { get; set; }
 
+        public string DisplayName { get; set; }
+
+        public int QuantidadeVagas { get; set; }
+
+        public IEnumerable<PassageiroCarona> Passageiros { get; set; }
+
+        public Geopoint Location { get; set; }
         //public Uri ImageSourceUri { get; set; }
         //public string MoreInfo { get; set; }
         //public Point NormalizedAnchorPoint { get; set; }

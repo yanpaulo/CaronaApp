@@ -57,7 +57,36 @@ namespace CaronaApp.Universal.Models
                     Latitude = jsObject["Latitude"].GetNumber(),
                     Longitude = jsObject["Longitude"].GetNumber()
                 })
+                //, Passageiros = PassageirosFromJsonArray(jsObject["Passageiros"].GetArray())
+            };
+        }
+
+
+        private static List<PassageiroCarona> PassageirosFromJsonArray(JsonArray array)
+        {
+            List<PassageiroCarona> passageiros = new List<PassageiroCarona>();
+            foreach (var jsArrayItem in array)
+            {
+                if (jsArrayItem != null && jsArrayItem.ValueType == JsonValueType.Object)
+                {
+                    var item = jsArrayItem.GetObject();
+                    PassageiroCarona p = PassageiroFromJsonObject(item);
+                    passageiros.Add(p);
+                }
+
+            }
+            return passageiros;
+        }
+
+        private static PassageiroCarona PassageiroFromJsonObject(JsonObject jsObject)
+        {
+            return new PassageiroCarona
+            {
+                Id = (int)jsObject["Id"].GetNumber(),
+                Nome = jsObject["Nome"].GetString()
             };
         }
     }
+
+}
 }

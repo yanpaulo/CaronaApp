@@ -33,6 +33,8 @@ namespace CaronaApp.Universal.Models
             }
         }
 
+        public int Vagas => Carona.QuantidadeVagas - Carona.Passageiros.Count();
+
         private void NotifyPropertyChanged(string name)
         {
             if (PropertyChanged != null)
