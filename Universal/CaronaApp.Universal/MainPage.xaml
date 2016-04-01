@@ -7,9 +7,13 @@
     xmlns:Maps="using:Windows.UI.Xaml.Controls.Maps"
     x:Class="CaronaApp.Universal.MainPage"
     mc:Ignorable="d">
-
+    <Page.Transitions>
+        <TransitionCollection>
+            <NavigationThemeTransition />
+        </TransitionCollection>
+    </Page.Transitions>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <Slider x:Name="slider" Value="16" Minimum="1" Maximum="20" ></Slider>
+        <Slider x:Name="slider" Value="16" Minimum="1" Maximum="20" Padding="5,5,5,5" ></Slider>
         <Maps:MapControl x:Name="mapControl" HorizontalAlignment="Stretch" ZoomLevel="{Binding ElementName=slider, Path=Value, Mode=TwoWay}" Margin="5,50,5,5" VerticalAlignment="Stretch" Loaded="mapControl_Loaded" ZoomInteractionMode="GestureAndControl">
             
             <Maps:MapItemsControl x:Name="MapItems">

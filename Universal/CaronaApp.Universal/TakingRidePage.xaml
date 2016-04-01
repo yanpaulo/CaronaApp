@@ -7,24 +7,29 @@
     xmlns:Maps="using:Windows.UI.Xaml.Controls.Maps"
     x:Class="CaronaApp.Universal.TakingRidePage"
     mc:Ignorable="d">
+    <Page.Transitions>
+        <TransitionCollection>
+            <NavigationThemeTransition />
+        </TransitionCollection>
+    </Page.Transitions>
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"></RowDefinition>
             <RowDefinition></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
-        <Slider x:Name="slider" Grid.Row="0" VerticalAlignment="Stretch" Value="16" Minimum="1" Maximum="20" ></Slider>
+        <Slider x:Name="slider" Grid.Row="0" VerticalAlignment="Stretch" Value="16" Minimum="1" Maximum="20"  Padding="5,5,5,5"  ></Slider>
         <Maps:MapControl x:Name="mapControl" Grid.Row="1" HorizontalAlignment="Stretch" ZoomLevel="{Binding ElementName=slider, Path=Value, Mode=TwoWay}" Margin="5,50,5,5" VerticalAlignment="Stretch" Loaded="mapControl_Loaded" ZoomInteractionMode="GestureAndControl">
             <Image Source="ms-appx:///Assets/person_icon.png" Width="35" Maps:MapControl.Location="{Binding CenterPoint}" />
             <Image Source="ms-appx:///Assets/carrinho.png" Width="35" Maps:MapControl.Location="{Binding Carona.Location}" />
         </Maps:MapControl>
         <StackPanel Grid.Row="2" Padding="10,10,10,20">
             <StackPanel Orientation="Horizontal">
-                <TextBlock>Nome: </TextBlock>
+                <TextBlock Foreground="{ThemeResource SystemAccentColor}" Style="{ThemeResource BaseTextBlockStyle}">Nome: </TextBlock>
                 <TextBlock Text="{Binding Path=Carona.DisplayName, FallbackValue='Indosponível'}"></TextBlock>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <TextBlock>Vagas:</TextBlock>
+                <TextBlock Foreground="{ThemeResource SystemAccentColor}" Style="{ThemeResource BaseTextBlockStyle}">Vagas:</TextBlock>
                 <TextBlock Text="{Binding Path=Carona.Vagas, FallbackValue='1'}"></TextBlock>
             </StackPanel>
 
