@@ -68,7 +68,7 @@ namespace CaronaApp.Universal.Models
             return new Carona
             {
                 Id = (int)jsObject["Id"].GetNumber(),
-                DisplayName = jsObject["Nome"].ToString(),
+                DisplayName = jsObject["Nome"].ValueType == JsonValueType.String ? jsObject["Nome"].GetString() : string.Empty,
                 Location = new Geopoint(new BasicGeoposition
                 {
                     Latitude = jsObject["Latitude"].GetNumber(),
